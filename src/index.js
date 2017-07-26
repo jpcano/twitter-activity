@@ -1,5 +1,5 @@
 var OAuth = require('oauth').OAuth;
-var javascript_time_ago  = require('javascript-time-ago')
+var javascript_time_ago = require('javascript-time-ago');
 
 // Load number pluralization functions for the locales.
 // (the ones that decide if a number is gonna be
@@ -8,10 +8,10 @@ var javascript_time_ago  = require('javascript-time-ago')
 // https://github.com/eemeli/make-plural.js
 // http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
 //
-javascript_time_ago.locale(require('javascript-time-ago/locales/en'))
-require('javascript-time-ago/intl-messageformat-global')
-require('intl-messageformat/dist/locale-data/en')
-const time_ago_english = new javascript_time_ago('en-US')
+javascript_time_ago.locale(require('javascript-time-ago/locales/en'));
+require('javascript-time-ago/intl-messageformat-global');
+require('intl-messageformat/dist/locale-data/en');
+const time_ago_english = new javascript_time_ago('en-US');
 
 function TwitterActivity(config) {
     /*if (!(this instanceof TwitterActivity)) {
@@ -37,10 +37,9 @@ TwitterActivity.prototype.getActivity = function (user, count, callback) {
     var path = `/statuses/user_timeline.json?screen_name=${user}&count=${count}&trim_user=true`;
     var url = this.base_url + path;
     this._request(url, callback);
-}
+};
 
-/* istanbul ignore next */
-TwitterActivity.prototype._request = function (url, callback) {
+TwitterActivity.prototype._request = function (url, callbacky) {
      this.oauth.get(url, this.access_token, this.access_token_secret, function (err, data, response) {
          if (!err) {
              var result = JSON.parse(data).map(function (t) {
@@ -50,11 +49,11 @@ TwitterActivity.prototype._request = function (url, callback) {
                      ago: time_ago_english.format(new Date(t.created_at))
                  }
              });
-             callback(err, JSON.stringify(result), response);
+             callbacky(err, JSON.stringify(result), response);
          } else {
-             callback(err, data, response);
+             callbacky(new Error(err), data, response);
          }
-     })
-}
+     });
+};
 
 module.exports = TwitterActivity
